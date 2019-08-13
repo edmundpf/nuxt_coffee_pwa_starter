@@ -1,48 +1,49 @@
-import Vuex from 'vuex'
 import Cookies from 'js-cookie'
 import createPersistedState from 'vuex-persistedstate'
 
-createStore = () =>
-	return new Vuex.Store(
-		state: () => (
-			msg: 'Project loaded!'
-		),
+# State
 
-		# Mutations
+export state = ->
+	msg: 'Project loaded!'
 
-		mutations:
 
-			# Mutate State
+# Mutations
 
-			mutateState: (state, payload) ->
-				for key of payload
-					if state[key]?
-						state[key] = payload[key]
+export mutations = ->
 
-		# Actions
+	# Mutate State
 
-		actions:
+	mutateState: (state, payload) ->
+		for key of payload
+			if state[key]?
+				state[key] = payload[key]
 
-			# Set State
+# Actions
 
-			setState: (context, payload) ->
-				context.commit('mutateState', payload)
+export actions = ->
 
-		# Persisted Store (7 days)
+	# Set State
 
-		plugins: [
-			createPersistedState(
-				storage:
-					removeItem: (key) -> Cookies.remove(key)
-					getItem: (key) -> Cookies.get(key)
-					setItem: (key, value) -> Cookies.set(
-						key,
-						value,
-						expires: 7,
-						secure: false
-					)
+	setState: (context, payload) ->
+		context.commit('mutateState', payload)
+
+# Plugins
+
+export plugins = [
+
+	# Persisted Store (7 days)
+
+	createPersistedState(
+		storage:
+			removeItem: (key) -> Cookies.remove(key)
+			getItem: (key) -> Cookies.get(key)
+			setItem: (key, value) -> Cookies.set(
+				key,
+				value,
+				expires: 7,
+				secure: false
 			)
-		],
-)
+	)
+]
 
-export default createStore
+#::: End Program :::
