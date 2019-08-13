@@ -2,6 +2,8 @@ import appConfig from './assets/json/appConfig.json'
 
 module.exports =
 
+	# Render Mode
+
 	mode: 'universal'
 
 	# Web Server
@@ -42,7 +44,8 @@ module.exports =
 	# CSS
 
 	css: [
-
+		src: '~/assets/scss/styles.scss'
+		lang: 'scss'
 	]
 
 	# Plugins

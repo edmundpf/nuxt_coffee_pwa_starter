@@ -1,8 +1,10 @@
 <template lang="pug">
 	section.container
 		div
-			h1.title {{ test }}
-			h2.subtitle {{ $store.state.msg }}
+			h1.title(class='has-text-purple')
+				| {{ test }}
+			h2.subtitle(class='has-text-grey')
+				| {{ $store.state.msg }}
 </template>
 
 <script lang="coffee">

@@ -1,0 +1,19 @@
+// Bulma Core
+
+@import "~bulma/sass/utilities/_all";
+
+// Colors
+
+$purple: #b233ff;
+$purple-invert: findColorInvert($purple);
+
+// Color classes | $colors | i.e. is-primary
+
+$colors: (
+	"purple": ($purple, $purple-invert)
+);
+
+// Import Bulma and Buefy styles
+
+@import "~bulma";
+@import "~buefy/src/scss/buefy";
