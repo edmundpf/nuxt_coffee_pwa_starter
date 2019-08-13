@@ -1,0 +1,5 @@
+{
+  "title": "Nuxt Coffee PWA Starter",
+  "description": "Nuxt.js PWA with Pug, Coffeescript, Babel, Buefy, and Firestore.",
+  "port": 3000
+}
