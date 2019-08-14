@@ -1,15 +1,16 @@
 import Cookies from 'js-cookie'
 import createPersistedState from 'vuex-persistedstate'
-import { storeMutations, storeActions } from '~/modules/storeMethods'
+import {
+	indexState,
+	storeMutations,
+	storeActions,
+	persistPaths,
+} from '~/modules/storeMethods'
 
-#: State
-
-export state = ->
-	msg: 'Project loaded!'
-
-#: Mutations and Actions
+#: State, Mutations and Actions
 
 export {
+	indexState as state,
 	storeMutations as mutations,
 	storeActions as actions,
 }
@@ -22,6 +23,7 @@ export plugins = [
 
 	createPersistedState(
 		storage:
+			paths: persistPaths()
 			removeItem: (key) -> Cookies.remove(key)
 			getItem: (key) -> Cookies.get(key)
 			setItem: (key, value) -> Cookies.set(

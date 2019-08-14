@@ -1,17 +1,17 @@
 <template lang="pug">
 	.div
-		topNavbar
+		topNav
 		.div
 			nuxt
 </template>
 
 <script lang="coffee">
 
-import topNavbar from '~/components/topNavbar'
+import topNav from '~/components/topNav'
 
 export default
 	components: {
-		topNavbar
+		topNav
 	}
 
 </script>

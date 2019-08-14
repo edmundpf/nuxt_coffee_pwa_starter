@@ -7,7 +7,10 @@
 					alt='Starter project'
 				)
 		template(slot='start')
-			b-navbar-item(href='/')
+			b-navbar-item(
+				href='/'
+				v-if='$store.state.topNav.showHome'
+			)
 				| Home
 		template(slot='end')
 			b-navbar-item(tag='div')

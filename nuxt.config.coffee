@@ -24,26 +24,7 @@ module.exports =
 	# Manifest
 
 	manifest:
-		name: appConfig.titlea
-
-	# Loading Bar Color
-
-	loading: {
-		color: '#3B8070'
-	}
-
-	# CSS
-
-	css: [
-		src: '~/assets/scss/styles.scss'
-		lang: 'scss'
-	]
-
-	# Plugins
-
-	plugins: [
-
-	]
+		name: appConfig.title
 
 	# Modules
 
@@ -55,6 +36,33 @@ module.exports =
 			oneSignal: false
 		]
 	]
+
+	# Middleware
+
+	router:
+		middleware: [
+			'isIndex'
+		]
+
+	# Plugins
+
+	plugins: [
+		'~/plugins/validator'
+		'~/plugins/firebaseInit'
+	]
+
+	# CSS
+
+	css: [
+		src: '~/assets/scss/styles.scss'
+		lang: 'scss'
+	]
+
+	# Loading Bar Color
+
+	loading: {
+		color: '#3B8070'
+	}
 
 	# Build Config
 
