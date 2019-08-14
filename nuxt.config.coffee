@@ -16,24 +16,15 @@ module.exports =
 	head:
 		title: appConfig.title
 		meta: [
-			{
-				charset: 'utf-8'
-			}
-			{
-				name: 'viewport'
-				content: 'width=device-width, initial-scale=1'
-			}
-			{
-				hid: 'description'
-				name: 'description'
-				content: appConfig.description
-			}
+			hid: 'description'
+			name: 'description'
+			content: appConfig.description
 		]
-		link: [
-			rel: 'icon'
-			type: 'image/x-icon'
-			href: '/favicon.ico'
-		]
+
+	# Manifest
+
+	manifest:
+		name: appConfig.titlea
 
 	# Loading Bar Color
 
@@ -59,6 +50,10 @@ module.exports =
 	modules: [
 		'~/modules/coffeescript'
 		'nuxt-buefy'
+		[
+			'@nuxtjs/pwa'
+			oneSignal: false
+		]
 	]
 
 	# Build Config
@@ -71,6 +66,6 @@ module.exports =
 
 			# Source Map Configuration
 
-			config.devtool = if ctx.isClient then '#eval-source-map' else '#inline-source-map'
+			config.devtool = if ctx.isClient then 'eval-source-map' else 'inline-source-map'
 
 #::: End Program :::

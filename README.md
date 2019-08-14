@@ -17,7 +17,7 @@ export firebaseConfig =
 ```
 * Enable cloud firestore
 * Add a collection that contains a bcrypt-encrypted secret key to verify admin sign-ups for additional admin functions
-* The collection, document name, and key name must match the *secret_key_collection, secret_key_document, and secret_key_field* values in *~/assets/json/appConfig.json* respectively and can be modified
+* The collection, document name, and key name must match the *collection, document, and field* values under *secretKey* in *~/assets/json/appConfig.json* respectively and can be modified
 
 ## Build Setup
 

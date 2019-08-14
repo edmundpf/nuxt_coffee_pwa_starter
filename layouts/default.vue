@@ -1,4 +1,17 @@
 <template lang="pug">
 	.div
-		nuxt
+		topNavbar
+		.div
+			nuxt
 </template>
+
+<script lang="coffee">
+
+import topNavbar from '~/components/topNavbar'
+
+export default
+	components: {
+		topNavbar
+	}
+
+</script>

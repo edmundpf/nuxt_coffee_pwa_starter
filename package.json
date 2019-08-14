@@ -11,6 +11,8 @@
         "generate": "nuxt generate"
     },
     "dependencies": {
+        "@nuxtjs/pwa": "^3.0.0-beta.16",
+        "firebase": "^6.3.5",
         "js-cookie": "^2.2.1",
         "node-sass": "^4.12.0",
         "nuxt": "^2.8.1",

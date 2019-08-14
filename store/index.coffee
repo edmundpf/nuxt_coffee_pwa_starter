@@ -1,33 +1,20 @@
 import Cookies from 'js-cookie'
 import createPersistedState from 'vuex-persistedstate'
+import { storeMutations, storeActions } from '~/modules/storeMethods'
 
-# State
+#: State
 
 export state = ->
 	msg: 'Project loaded!'
 
+#: Mutations and Actions
 
-# Mutations
+export {
+	storeMutations as mutations,
+	storeActions as actions,
+}
 
-export mutations = ->
-
-	# Mutate State
-
-	mutateState: (state, payload) ->
-		for key of payload
-			if state[key]?
-				state[key] = payload[key]
-
-# Actions
-
-export actions = ->
-
-	# Set State
-
-	setState: (context, payload) ->
-		context.commit('mutateState', payload)
-
-# Plugins
+#: Plugins
 
 export plugins = [
 
