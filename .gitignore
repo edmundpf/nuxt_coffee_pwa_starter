@@ -12,3 +12,6 @@ dist
 
 # Package Lock
 package-lock.json
+
+# Firebase config
+modules/authInfo.coffee

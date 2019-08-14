@@ -1,5 +1,8 @@
 {
   "title": "Nuxt Coffee PWA Starter",
   "description": "Nuxt.js PWA with Pug, Coffeescript, Babel, Buefy, and Firestore.",
+  "secret_key_collection": "admin",
+  "secret_key_document": "secret_key",
+  "secret_key_field": "key",
   "port": 3000
 }
