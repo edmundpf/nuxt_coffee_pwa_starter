@@ -15,3 +15,6 @@ package-lock.json
 
 # Firebase config
 modules/authInfo.coffee
+
+# Service Worker
+static/sw.js
