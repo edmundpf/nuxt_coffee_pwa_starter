@@ -15,8 +15,23 @@
 		template(slot='end')
 			b-navbar-item(tag='div')
 				.buttons
-					a.button.is-primary
+					a.button.is-primary(
+						@click='signupClick'
+					)
 						strong Sign up
-					a.button.is-light
+					a.button.is-light(
+						@click='loginClick'
+					)
 						| Log in
 </template>
+
+<script lang="coffee">
+
+	export default
+		methods:
+			signupClick: ->
+				return 0
+			loginClick: ->
+				return 0
+
+</script>

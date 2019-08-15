@@ -2,18 +2,18 @@
 	.buttons
 		button.button(
 			type='button'
-			@click='$emit("cancelClick")'
+			@click="$emit('cancelClick')"
 		) {{ cancelText }}
 		button.button.is-danger(
 			type='button'
 			v-if='hasGoogle'
-			@click='$emit("googleClick")'
+			@click="$emit('googleClick')"
 		)
 			b-icon(icon='google')
 			span Google
 		button.button.is-primary(
 			type='button'
-			@click='$emit("actionClick")'
+			@click="$emit('actionClick')"
 		) {{ actionText }}
 </template>
 
@@ -24,13 +24,19 @@
 	export default
 		data: ->
 			return
-				cancelText: this.cancel || 'Close'
-				actionText: this.action || 'Submit'
-				hasGoogle: if this.google? then this.google else true
+				cancelText: this.cancel
+				actionText: this.action
+				hasGoogle: this.google
 		props:
-			cancel: String
-			action: String
-			google: Boolean
+			cancel:
+				type: String
+				default: 'Close'
+			action:
+				type: String
+				default: 'Submit'
+			google:
+				type: String
+				default: true
 		components: {
 			authForm
 		}

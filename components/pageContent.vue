@@ -1,7 +1,7 @@
 <template lang="pug">
 	section.container
 		div(class='content has-text-centered')
-			h1.title(class='has-text-purple')
+			h1.title(class='has-text-primary')
 				| {{ pageTitle }}
 			h2.subtitle(
 				class='has-text-grey'

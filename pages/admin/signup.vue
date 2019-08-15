@@ -2,7 +2,7 @@
 	authContent(
 		:signup='true'
 		:google='true'
-		:admin='false'
+		:admin='true'
 		:modal='false'
 		title='Sign Up'
 		cancel='Cancel'

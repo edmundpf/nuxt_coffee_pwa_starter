@@ -1,18 +1,23 @@
 <template lang="pug">
 	div
-		b-field(label='Email')
+		b-field(
+			label='Email'
+			:type="{ 'is-danger': hasEmailError }"
+			:message='emailErrorMsg'
+		)
 			b-input(
 				name='email'
 				:value='email'
 				v-model='email'
 				placeholder='Your email'
 				v-validate="'required|email'"
-				type="{ 'is-danger': hasEmailError }"
-				message='emailErrorMsg'
+
 			)
 		b-field(
 			label='Secret Key'
 			v-if='hasAdmin'
+			:type="{ 'is-danger': hasSecretKeyError }"
+			:message='secretKeyErrorMsg'
 		)
 			b-input(
 				name='secretKey'
@@ -21,10 +26,13 @@
 				placeholder='Your secret key'
 				password-reveal
 				v-validate="'required|min:8'"
-				type="{ 'is-danger': hasSecretKeyError }"
-				:message='secretKeyErrorMsg'
+
 			)
-		b-field(label='Password')
+		b-field(
+			label='Password'
+			:type="{ 'is-danger': hasPasswordError }"
+			:message='passwordErrorMsg'
+		)
 			b-input(
 				name='password'
 				:value='password'
@@ -32,12 +40,13 @@
 				placeholder='Your password'
 				password-reveal
 				v-validate="'required|min:8|strongPassword'"
-				type="{ 'is-danger': hasPasswordError }"
-				:message='passwordErrorMsg'
+
 			)
 		b-field(
 			label='Confirm Password'
 			v-if='hasSignup'
+			:type="{ 'is-danger': hasConfirmPasswordError }"
+			:message='confirmPasswordErrorMsg'
 		)
 			b-input(
 				name='confirmPassword'
@@ -46,16 +55,17 @@
 				placeholder='Confirm your password'
 				password-reveal
 				v-validate="'required|min:8|strongPassword'"
-				type="{ 'is-danger': hasConfirmPasswordError }"
-				:message='confirmPasswordErrorMsg'
 			)
 		b-field
 			b-checkbox(type='is-primary')
 			| Remember me
-		authButtons(
-			:cancel='cancel'
-			:action='action'
-			:google='google'
+		actionButtons(
+			:cancel='cancelText'
+			:action='actionText'
+			:google='hasGoogle'
+			@cancel-click="$emit('cancelClick')"
+			@action-click="$emit('actionClick')"
+			@google-click="$emit('googleClick')"
 			v-if='hasButtons'
 		)
 </template>
@@ -63,25 +73,37 @@
 <script lang="coffee">
 
 	import userInfo from '~/mixins/userInfo'
-	import authButtons from '~/components/authButtons'
+	import actionButtons from '~/components/actionButtons'
 
 	export default
 		data: ->
 			return
-				hasSignup: if this.signup? then this.signup else true
-				hasAdmin: if this.admin? then this.admin else false
-				hasButtons: if this.buttons? then this.buttons else true
+				hasSignup: this.config.signup || this.signup
+				hasAdmin: this.config.admin || this.admin
+				hasButtons: this.config.buttons || this.buttons
+				hasGoogle: this.config.google || this.google
+				cancelText: this.config.cancel || this.cancel
+				actionText: this.config.action || this.action
 		props:
-			signup: Boolean
+			signup:
+				type: Boolean
+				default: true
+			admin:
+				type: Boolean
+				default: false
+			buttons:
+				type: Boolean
+				default: true
+			config:
+				type: Object
+				default: {}
 			google: Boolean
-			admin: Boolean
-			buttons: Boolean
 			cancel: String
 			action: String
 		mixins: [
 			userInfo
 		]
 		components: {
-			authButtons
+			actionButtons
 		}
 </script>
