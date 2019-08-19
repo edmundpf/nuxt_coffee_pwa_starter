@@ -11,6 +11,7 @@ indexState = ->
 		admin: false
 		loggedIn: false
 		remember: false
+		session: false
 		loginType: 'email'
 		uid: ''
 		email: ''
@@ -23,6 +24,7 @@ dbOmit = [
 	'uid'
 	'loggedIn'
 	'remember'
+	'session'
 	'subtitle'
 	'message'
 	'topNav'
@@ -117,6 +119,7 @@ persistPaths = ->
 			omit: [
 				'subtitle'
 				'message'
+				'session'
 			]
 		'topNav':
 			obj: topNavState()
@@ -134,6 +137,12 @@ persistPaths = ->
 				persist.push("#{state}.#{path}")
 	return persist
 
+#: Session Storage paths
+
+sessionPaths = [
+	'session'
+]
+
 #: Exports
 
 export {
@@ -144,6 +153,7 @@ export {
 	topNavMutations,
 	topNavActions,
 	persistPaths,
+	sessionPaths,
 }
 
 #::: End Program :::

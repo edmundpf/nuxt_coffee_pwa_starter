@@ -4,7 +4,7 @@ module.exports =
 
 	# Render Mode
 
-	mode: 'universal'
+	mode: 'spa'
 
 	# Web Server
 
@@ -42,11 +42,16 @@ module.exports =
 	router:
 		middleware: [
 			'pageType'
+			'newSession'
 		]
 
 	# Plugins
 
 	plugins: [
+		{
+			src: '~/plugins/persistState',
+			ssr: false
+		}
 		'~/plugins/validator'
 		'~/plugins/firebaseInit'
 		'~/plugins/logTools'
