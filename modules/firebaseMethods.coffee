@@ -88,12 +88,18 @@ export authSignUp = (args) ->
 	try
 		getUser = {}
 		signIn = {}
-		if ((!this.$store.state.uid? || this.$store.state.uid == '') &&
+		userData =
+			uid: this.$store.state.uid
+			email: this.$store.state.email
+			loginType: 'email'
+			loggedIn: true
+			remember: args.rememberMe
+			admin: true
+		if this.$store.state.uid? && this.$store.state.uid != ''
+			getUser = await dbGetUser.bind(this)(this.$store.state.uid)
+		else if ((!this.$store.state.uid? || this.$store.state.uid == '') &&
 			this.$store.state.email? && this.$store.state.email != '')
 				getUser = await dbGetUserByEmail.bind(this)(args.email)
-		else if (this.$store.state.uid? && this.$store.state.uid != '' &&
-			(!this.$store.state.email? || this.$store.state.email == ''))
-				getUser = await dbGetUser.bind(this)(this.$store.state.uid)
 
 		hashedKey = await dbGetSecretKey.bind(this)()
 		if hashedKey?
@@ -111,7 +117,12 @@ export authSignUp = (args) ->
 						signIn
 						msg: 'Admin email login successful.'
 					)
-				else
+					userData = {
+						...userData,
+						uid: signIn.user.uid,
+						email: signIn.user.email,
+					}
+				else if !getUser.email?
 					signIn = await fireAuth().createUserWithEmailAndPassword(
 						args.email,
 						args.password
@@ -120,13 +131,14 @@ export authSignUp = (args) ->
 						signIn
 						msg: 'Admin email signup successful.'
 					)
-				this.$store.dispatch('setData',
-					uid: signIn.user.uid
-					email: signIn.user.email
-					loginType: 'email'
-					loggedIn: true
-					remember: args.rememberMe
-					admin: true
+					userData = {
+						...userData,
+						uid: signIn.user.uid,
+						email: signIn.user.email,
+					}
+				this.$store.dispatch(
+					'setData',
+					userData
 				)
 				this.$router.push('/admin')
 	catch err
@@ -141,12 +153,11 @@ export authSignUp = (args) ->
 export authLogIn = (args) ->
 	try
 		getUser = {}
-		if ((!this.$store.state.uid? || this.$store.state.uid == '') &&
+		if this.$store.state.uid? && this.$store.state.uid != ''
+			getUser = await dbGetUser.bind(this)(this.$store.state.uid)
+		else if ((!this.$store.state.uid? || this.$store.state.uid == '') &&
 			this.$store.state.email? && this.$store.state.email != '')
 				getUser = await dbGetUserByEmail.bind(this)(args.email)
-		else if (this.$store.state.uid? && this.$store.state.uid != '' &&
-			(!this.$store.state.email? || this.$store.state.email == ''))
-				getUser = await dbGetUser.bind(this)(this.$store.state.uid)
 
 		hashedKey = await dbGetSecretKey.bind(this)()
 		if hashedKey?
@@ -244,11 +255,12 @@ export dbEditUser = (uid, obj) ->
 export dbGetUser = (uid) ->
 	try
 		docGet = await fireStore.collection('users').doc(uid).get()
+		userDoc = docGet.data()
 		logJson(
-			docGet
+			userDoc
 			msg: 'User document fetched from firestore.'
 		)
-		return docGet
+		return userDoc
 	catch err
 		logError(
 			err
@@ -264,22 +276,13 @@ export dbGetUserByEmail = (email) ->
 			'email',
 			'==',
 			email
-		).limit(1)
-		if !queryGet.empty
-			docs = []
-			queryGet.forEach((child) ->
-				docs.push({
-					...child.val()
-					uid: child.key
-				})
-			)
-			logJson(
-				docs[0]
-				msg: 'User document fetched from firestore.'
-			)
-			return docs[0]
-		else
-			return {}
+		).limit(1).get()
+		userDoc = queryGet.docs[0].data()
+		logJson(
+			userDoc
+			msg: 'User document fetched from firestore.'
+		)
+		return userDoc
 	catch err
 		logError(
 			err
