@@ -1,15 +1,18 @@
 <template lang="pug">
-	pageContent(:subtitle='true')
+	div
+		pageContent(:subtitle='true')
 </template>
 
 <script lang="coffee">
 
 	import pageContent from '~/components/pageContent'
-	import actionModal from '~/components/actionModal'
+	import hasAuth from '~/middleware/hasAuth'
 
 	export default
 		components: {
-			actionModal
 			pageContent
 		}
+		middleware: [
+			hasAuth
+		]
 </script>

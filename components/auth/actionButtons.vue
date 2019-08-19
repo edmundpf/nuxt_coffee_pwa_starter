@@ -19,25 +19,14 @@
 
 <script lang="coffee">
 
-	import authForm from '~/components/authForm'
+	import authMixin from '~/mixins/authMixin'
+	import authForm from '~/components/auth/authForm'
 
 	export default
-		data: ->
-			return
-				cancelText: this.cancel
-				actionText: this.action
-				hasGoogle: this.google
-		props:
-			cancel:
-				type: String
-				default: 'Close'
-			action:
-				type: String
-				default: 'Submit'
-			google:
-				type: String
-				default: true
 		components: {
 			authForm
 		}
+		mixins: [
+			authMixin
+		]
 </script>

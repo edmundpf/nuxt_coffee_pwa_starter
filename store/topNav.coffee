@@ -1,7 +1,23 @@
-import { topNavState, storeMutations, storeActions } from '~/modules/storeMethods'
+import {
+	topNavState,
+	storeMutations,
+	storeActions,
+	topNavMutations,
+	topNavActions,
+} from '~/modules/storeMethods'
+
+mutations = {
+	...storeMutations,
+	...topNavMutations
+}
+
+actions = {
+	...storeActions,
+	...topNavActions,
+}
 
 export {
 	topNavState as state,
-	storeMutations as mutations,
-	storeActions as actions,
+	mutations,
+	actions,
 }

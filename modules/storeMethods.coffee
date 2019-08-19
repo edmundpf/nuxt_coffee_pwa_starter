@@ -15,7 +15,9 @@ indexState = ->
 
 topNavState = ->
 	return
-		showHome: true
+		isHome: true
+		isSignup: false
+		isLogin: false
 
 #: Persisted Paths
 
@@ -30,7 +32,9 @@ persistPaths = ->
 		'topNav':
 			obj: topNavState()
 			omit: [
-				'showHome'
+				'isHome'
+				'isSignup'
+				'isLogin'
 			]
 	persist = []
 	for state, attr of paths
@@ -61,6 +65,29 @@ storeActions =
 	setState: (context, payload) ->
 		context.commit('mutateState', payload)
 
+#: Top Navbar Mutations
+
+topNavMutations =
+
+	# Mutate Auth Page Type
+
+	mutateAuthType: (state, payload) ->
+		if payload.isSignup? && typeof payload.isSignup == 'boolean'
+			state.isSignup = payload.isSignup
+			state.isLogin = !payload.isSignup
+		else if payload.isLogin? && typeof payload.isLogin == 'boolean'
+			state.isLogin = payload.isLogin
+			state.isSignup = !payload.isLogin
+
+#: Top Navbar Actions
+
+topNavActions =
+
+	# Set Auth Page Type
+
+	setAuthType: (context, payload) ->
+		context.commit('mutateAuthType', payload)
+
 #: Exports
 
 export {
@@ -68,6 +95,8 @@ export {
 	topNavState,
 	storeMutations,
 	storeActions,
+	topNavMutations,
+	topNavActions,
 	persistPaths,
 }
 

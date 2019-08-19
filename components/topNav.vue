@@ -1,37 +1,89 @@
 <template lang="pug">
-	b-navbar
-		template(slot='brand')
-			b-navbar-item(href='/')
-				img(
-					:src='$icon(64)'
-					alt='Starter project'
+	.div
+		b-navbar
+			template(slot='brand')
+				b-navbar-item(href='/')
+					img(
+						:src='$icon(64)'
+						alt='Starter project'
+					)
+			template(slot='start')
+				b-navbar-item(
+					href='/'
+					v-if='!$store.state.topNav.isHome'
 				)
-		template(slot='start')
-			b-navbar-item(
-				href='/'
-				v-if='$store.state.topNav.showHome'
-			)
-				| Home
-		template(slot='end')
-			b-navbar-item(tag='div')
-				.buttons
-					a.button.is-primary(
-						@click='signupClick'
-					)
-						strong Sign up
-					a.button.is-light(
-						@click='loginClick'
-					)
-						| Log in
+					| Home
+			template(slot='end')
+				b-navbar-item(tag='div')
+					.buttons
+						a.button.is-primary(
+							@click='signupClick'
+							v-if="!$store.state.loggedIn && !$store.state.topNav.isSignup"
+						)
+							strong Sign up
+						a.button.is-light(
+							@click='loginClick'
+							v-if="!$store.state.loggedIn && !$store.state.topNav.isLogin"
+						)
+							| Log in
+						a.button.is-danger(
+							@click='signoutClick'
+							v-if="$store.state.loggedIn"
+						)
+							| Sign out
+		authContent(
+			:signup='false'
+			:google='true'
+			:admin='false'
+			:modal='true'
+			title='Log In'
+			cancel='Close'
+			action='Submit'
+			:modal-show='loginModalActive'
+			v-if="!$store.state.loggedIn && $store.state.topNav.isHome"
+			ref='loginModal'
+		)
+		authContent(
+			:signup='true'
+			:google='true'
+			:admin='false'
+			:modal='true'
+			title='Sign Up'
+			cancel='Close'
+			action='Submit'
+			:modal-show='signupModalActive'
+			v-if="!$store.state.loggedIn && $store.state.topNav.isHome"
+			ref='signupModal'
+		)
 </template>
 
 <script lang="coffee">
 
+	import authContent from '~/components/auth/authContent'
+
 	export default
+		data: ->
+			return
+				loginModalActive: false
+				signupModalActive: false
 		methods:
 			signupClick: ->
-				return 0
+				if this.$store.state.topNav.isHome
+					this.$refs.signupModal.modalActive = true
+				else
+					this.$router.push('/account/signup')
 			loginClick: ->
-				return 0
+				if this.$store.state.topNav.isHome
+					this.$refs.loginModal.modalActive = true
+				else
+					this.$router.push('/account/login')
+			signoutClick: ->
+				this.$store.dispatch('setState',
+					loggedIn: false
+				)
+				this.$router.push('/')
+		components: {
+			authContent
+		}
 
 </script>

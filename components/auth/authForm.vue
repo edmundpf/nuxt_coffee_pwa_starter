@@ -21,6 +21,7 @@
 		)
 			b-input(
 				name='secretKey'
+				type='password'
 				:value='secretKey'
 				v-model='secretKey'
 				placeholder='Your secret key'
@@ -35,6 +36,8 @@
 		)
 			b-input(
 				name='password'
+				ref='password'
+				type='password'
 				:value='password'
 				v-model='password'
 				placeholder='Your password'
@@ -50,60 +53,40 @@
 		)
 			b-input(
 				name='confirmPassword'
+				type='password'
 				:value='confirmPassword'
 				v-model='confirmPassword'
 				placeholder='Confirm your password'
 				password-reveal
-				v-validate="'required|min:8|strongPassword'"
+				v-validate="'required|min:8|strongPassword|confirmed:password'"
 			)
 		b-field
 			b-checkbox(type='is-primary')
 			| Remember me
 		actionButtons(
-			:cancel='cancelText'
-			:action='actionText'
-			:google='hasGoogle'
-			@cancel-click="$emit('cancelClick')"
-			@action-click="$emit('actionClick')"
-			@google-click="$emit('googleClick')"
+			:config="authConfig"
 			v-if='hasButtons'
+			@cancelClick="cancelClick(true)"
+			@actionClick="actionClick(true)"
+			@googleClick="googleClick(true)"
 		)
 </template>
 
 <script lang="coffee">
 
 	import userInfo from '~/mixins/userInfo'
-	import actionButtons from '~/components/actionButtons'
+	import authMixin from '~/mixins/authMixin'
+	import authActions from '~/mixins/authActions'
+	import actionButtons from '~/components/auth/actionButtons'
 
 	export default
-		data: ->
-			return
-				hasSignup: this.config.signup || this.signup
-				hasAdmin: this.config.admin || this.admin
-				hasButtons: this.config.buttons || this.buttons
-				hasGoogle: this.config.google || this.google
-				cancelText: this.config.cancel || this.cancel
-				actionText: this.config.action || this.action
-		props:
-			signup:
-				type: Boolean
-				default: true
-			admin:
-				type: Boolean
-				default: false
-			buttons:
-				type: Boolean
-				default: true
-			config:
-				type: Object
-				default: {}
-			google: Boolean
-			cancel: String
-			action: String
 		mixins: [
 			userInfo
+			authMixin
+			authActions
 		]
 		components: {
 			actionButtons
 		}
+
 </script>

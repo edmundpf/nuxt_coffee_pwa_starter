@@ -1,4 +1,4 @@
-import { stringify } from 'flatted/esm'
+{ stringify } = require('flatted/cjs')
 
 #: Log JSON
 
@@ -31,3 +31,15 @@ export logError = (err, args) ->
 				console.log(error)
 			else
 				console.log("  >>> #{error}")
+	if err.message
+		console.log(" >>> MESSAGE: #{err.message}")
+
+#: Log Message w/ title
+
+export logMessage = (msg, title) ->
+	if title?
+		console.log("#{title}: #{msg}")
+	else
+		console.log(msg)
+
+#::: End Program :::

@@ -12,11 +12,15 @@
 
 <script lang="coffee">
 
-	import authContent from '~/components/authContent'
+	import authContent from '~/components/auth/authContent'
+	import hasAuth from '~/middleware/hasAuth'
 
 	export default
 		components: {
 			authContent
 		}
+		middleware: [
+			hasAuth
+		]
 
 </script>

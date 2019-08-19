@@ -14,9 +14,13 @@
 	export default
 		data: ->
 			return
-				pageTitle: this.title || 'Index page'
-				hasSubtitle: if this.subtitle? then this.subtitle else true
+				pageTitle: this.title
+				hasSubtitle: this.subtitle
 		props:
-			title: String
-			subtitle: Boolean
+			title:
+				type: String
+				default: 'Index page'
+			subtitle:
+				type: Boolean
+				default: true
 </script>

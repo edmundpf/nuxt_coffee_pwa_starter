@@ -4,8 +4,11 @@
 
 		data: ->
 
+			authState = {}
+			authConfig = {}
 			keys =
 				hasModal: 'modal'
+				modalActive: 'modalShow'
 				titleText: 'title'
 				hasSignup: 'signup'
 				hasAdmin: 'admin'
@@ -14,7 +17,14 @@
 				actionText: 'action'
 				hasGoogle: 'google'
 
-			return keys
+			for key, val of keys
+				authState[key] = if this.config[val]? then this.config[val] else this[val]
+				authConfig[val] = if this.config[val]? then this.config[val] else this[val]
+
+			return {
+				...authState,
+				authConfig: authConfig
+			}
 
 		props:
 
@@ -24,11 +34,17 @@
 				type: Boolean
 				default: true
 
+			# Modal is active
+
+			modalShow:
+				type: Boolean
+				default: false
+
 			# Auth element page/modal title
 
 			title:
 				type: String
-				default: 'Login'
+				default: 'Log In'
 
 			# Form element is for signup
 
@@ -63,13 +79,14 @@
 			# Action buttons has google button
 
 			google:
-				type: String
+				type: Boolean
 				default: true
 
 			# Config object for all props
 
 			config:
-				type: [Object, String]
-				default: {}
+				type: Object
+				default:
+					() -> {}
 
 </script>

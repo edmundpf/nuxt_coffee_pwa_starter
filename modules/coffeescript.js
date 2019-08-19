@@ -9,18 +9,20 @@ export default function() {
 
 	this.extendBuild((config) => {
 
+		// Get babel config from nuxt
+
+		const babel = config.module.rules.find(rule => {
+			return String(rule.test) == '/\\.jsx?$/i'
+		})
+
 		// Add Coffeescript Loader w/ Babel transpile
 
 		config.module.rules.push({
 			test: /\.coffee$/,
 			use: [
+				babel.use[0],
 				{
 					loader: 'coffee-loader',
-					options: {
-						transpile: {
-							presets: ['@babel/env']
-						}
-					}
 				}
 			]
 		})

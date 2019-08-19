@@ -41,7 +41,7 @@ module.exports =
 
 	router:
 		middleware: [
-			'isIndex'
+			'pageType'
 		]
 
 	# Plugins
@@ -49,6 +49,7 @@ module.exports =
 	plugins: [
 		'~/plugins/validator'
 		'~/plugins/firebaseInit'
+		'~/plugins/logTools'
 	]
 
 	# CSS
