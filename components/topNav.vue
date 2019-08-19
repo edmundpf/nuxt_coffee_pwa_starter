@@ -27,7 +27,7 @@
 						)
 							| Log in
 						a.button.is-danger(
-							@click='signoutClick'
+							@click='signOutClick'
 							v-if="$store.state.loggedIn"
 						)
 							| Sign out
@@ -59,6 +59,7 @@
 
 <script lang="coffee">
 
+	import { signOut } from '~/modules/firebaseMethods'
 	import authContent from '~/components/auth/authContent'
 
 	export default
@@ -77,11 +78,8 @@
 					this.$refs.loginModal.modalActive = true
 				else
 					this.$router.push('/account/login')
-			signoutClick: ->
-				this.$store.dispatch('setState',
-					loggedIn: false
-				)
-				this.$router.push('/')
+			signOutClick: ->
+				await signOut.bind(this)()
 		components: {
 			authContent
 		}

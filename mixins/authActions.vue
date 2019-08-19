@@ -1,19 +1,55 @@
 <script lang="coffee">
 
-	import { googleSignIn, emailSignUp, emailLogIn } from '~/modules/firebaseMethods'
+	import {
+		googleSignIn,
+		emailSignUp,
+		emailLogIn,
+		authSignUp,
+		authLogIn
+	} from '~/modules/firebaseMethods'
 
 	export default
 		methods:
 
 			# Action button click
 
-			actionClick: (isGrandchild=false, refName=null) ->
-				if isGrandchild
+			actionClick: (isDescendant=false, refName=null) ->
+				if isDescendant
+					retDict =
+						email: this.email
+						password: this.password
+						secretKey: this.secretKey
+						rememberMe: this.rememberMe
 					isValidated = await this.validateFields()
-					this.$parent.$emit('actionClick', isValidated)
+					this.$emit('actionClick', {
+						...retDict,
+						valid: isValidated
+					})
 				else
+					retDict =
+						email: this.$refs[refName].email
+						password: this.$refs[refName].password
+						secretKey: this.$refs[refName].secretKey
+						rememberMe: this.$refs[refName].rememberMe
 					isValidated = await this.$refs[refName].validateFields()
-					this.$emit('actionClick', isValidated)
+					this.$emit('actionClick', {
+						...retDict,
+						valid: isValidated
+					})
+
+			# Google button click
+
+			googleClick: (isDescendant=false, refName=null) ->
+				if isDescendant
+					this.$emit(
+						'googleClick'
+						rememberMe: this.rememberMe
+					)
+				else
+					this.$emit(
+						'googleClick'
+						rememberMe: this.$refs[refName].rememberMe
+					)
 
 			# Cancel button click
 
@@ -29,13 +65,6 @@
 				else
 					this.$router.go(-1)
 
-			# Google button click
-
-			googleClick: (isGrandchild=false) ->
-				if isGrandchild
-					this.$parent.$emit('cancelClick')
-				else
-					this.$emit('googleClick')
 
 			# Validate fields
 
@@ -51,12 +80,16 @@
 
 			# Auth event
 
-			authEvent: (validated) ->
-				if validated
-					if this.hasSignup
-						await emailSignUp.bind(this)(this.email, this.password)
-					else
-						await emailLogIn.bind(this)(this.email, this.password)
+			authEvent: (obj) ->
+				if obj.valid
+					if !this.hasAdmin && this.hasSignup
+						await emailSignUp.bind(this)(obj)
+					else if !this.hasAdmin && !this.hasSignup
+						await emailLogIn.bind(this)(obj)
+					else if this.hasAdmin && this.hasSignup
+						await authSignUp.bind(this)(obj)
+					else if this.hasAdmin && !this.hasSignup
+						await authLogIn.bind(this)(obj)
 				else
 					this.$buefy.toast.open(
 						message: 'Form is invalid, please fix fields and try again.'
@@ -66,8 +99,7 @@
 
 			# Google auth event
 
-			googleAuth: ->
-				this.$logMessage('Attempting to login with google', 'Google Auth')
-				await googleSignIn.bind(this)()
+			googleAuth: (obj) ->
+				await googleSignIn.bind(this)(obj)
 
 </script>

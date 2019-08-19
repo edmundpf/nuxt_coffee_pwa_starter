@@ -1,4 +1,8 @@
-#: States
+import omit from 'lodash/omit'
+import { dbEditUser } from '~/modules/firebaseMethods'
+
+
+#: INDEX
 
 # Index State
 
@@ -8,42 +12,29 @@ indexState = ->
 		loggedIn: false
 		remember: false
 		loginType: 'email'
+		uid: ''
+		email: ''
 		subtitle: ''
 		message: ''
 
-# Top Navbar State
+# Omit Keys for DB
 
-topNavState = ->
-	return
-		isHome: true
-		isSignup: false
-		isLogin: false
+dbOmit = [
+	'uid'
+	'loggedIn'
+	'remember'
+	'subtitle'
+	'message'
+	'topNav'
+]
 
-#: Persisted Paths
+#: Mutate State
 
-persistPaths = ->
-	paths =
-		'index':
-			obj: indexState()
-			omit: [
-				'subtitle'
-				'message'
-			]
-		'topNav':
-			obj: topNavState()
-			omit: [
-				'isHome'
-				'isSignup'
-				'isLogin'
-			]
-	persist = []
-	for state, attr of paths
-		for path of attr.obj
-			if path == 'index' && !attr.omit.includes(path)
-				persist.push(path)
-			else if path != 'index' && !attr.omit.includes(path)
-				persist.push("#{state}.#{path}")
-	return persist
+mutateState = (state, payload) ->
+	for key of payload
+		if state[key]?
+			state[key] = payload[key]
+
 
 #: Store Mutations
 
@@ -51,10 +42,19 @@ storeMutations =
 
 	# Mutate State
 
-	mutateState: (state, payload) ->
-		for key of payload
-			if state[key]?
-				state[key] = payload[key]
+	mutateState: mutateState
+
+	# Mutate Data
+
+	mutateData: (state, payload) ->
+		mutateState(state, payload)
+		dbEditUser(state.uid || payload.uid, omit(payload, dbOmit))
+
+	# Init Data
+
+	initData: (state, payload) ->
+		mutateState(state, payload)
+		dbEditUser(state.uid || payload.uid, omit(state, dbOmit))
 
 #: Store Actions
 
@@ -64,6 +64,26 @@ storeActions =
 
 	setState: (context, payload) ->
 		context.commit('mutateState', payload)
+
+	# Set Data
+
+	setData: (context, payload) ->
+		context.commit('initData', payload)
+
+	#: Update Data
+
+	updateData: (context, payload) ->
+		context.commit('mutateData', payload)
+
+#: TOP NAVBAR
+
+# Top Navbar State
+
+topNavState = ->
+	return
+		isHome: true
+		isSignup: false
+		isLogin: false
 
 #: Top Navbar Mutations
 
@@ -88,13 +108,39 @@ topNavActions =
 	setAuthType: (context, payload) ->
 		context.commit('mutateAuthType', payload)
 
+#: Persisted Paths
+
+persistPaths = ->
+	paths =
+		'index':
+			obj: indexState()
+			omit: [
+				'subtitle'
+				'message'
+			]
+		'topNav':
+			obj: topNavState()
+			omit: [
+				'isHome'
+				'isSignup'
+				'isLogin'
+			]
+	persist = []
+	for state, attr of paths
+		for path of attr.obj
+			if state == 'index' && !attr.omit.includes(path)
+				persist.push(path)
+			else if state != 'index' && !attr.omit.includes(path)
+				persist.push("#{state}.#{path}")
+	return persist
+
 #: Exports
 
 export {
 	indexState,
-	topNavState,
 	storeMutations,
 	storeActions,
+	topNavState,
 	topNavMutations,
 	topNavActions,
 	persistPaths,

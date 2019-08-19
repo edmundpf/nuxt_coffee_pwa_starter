@@ -17,7 +17,7 @@
 				actionButtons(
 					:config='authConfig'
 					@cancelClick="cancelClick(false)"
-					@googleClick="googleClick(false)"
+					@googleClick="googleClick(false, 'modalBody')"
 					@actionClick="actionClick(false, 'modalBody')"
 				)
 </template>

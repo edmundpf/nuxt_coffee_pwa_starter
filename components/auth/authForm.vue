@@ -61,7 +61,10 @@
 				v-validate="'required|min:8|strongPassword|confirmed:password'"
 			)
 		b-field
-			b-checkbox(type='is-primary')
+			b-checkbox(
+				type='is-primary'
+				v-model='rememberMe'
+			)
 			| Remember me
 		actionButtons(
 			:config="authConfig"

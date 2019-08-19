@@ -6,6 +6,7 @@
 				password: ''
 				confirmPassword: ''
 				secretKey: ''
+				rememberMe: false
 		computed:
 			hasEmailError: ->
 				return this.errors.has('email')
