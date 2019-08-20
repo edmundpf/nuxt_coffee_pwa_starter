@@ -205,7 +205,6 @@ export signOut = () ->
 		this.$store.dispatch('updateData',
 			loggedIn: false
 			remember: false
-			session: false
 		)
 		this.$router.push('/')
 	catch err

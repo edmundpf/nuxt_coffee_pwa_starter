@@ -6,3 +6,8 @@ export default ({ store, redirect }) ->
 				remember: false
 				session: true
 			)
+	else
+		if (!store.state.session)
+			store.dispatch('setState',
+				session: true
+			)
